@@ -6,14 +6,6 @@ This code is up to date version of, https://github.com/quickgrid/paper-implement
 
 Only slow sampling is implemented so far with both train and test timesteps equal to `T`.  It may require atleast an hour or two to generate something recognizable based on dataset. Only `64 x 64` resolution is tested. 
 
-### Instructions
-
-For gradient accumulation `batch_size * accumulation_iters` is the actual minibatch size. If code `batch_size = 2` and `accumulation_iters = 16` then minibatch size for gradient calculation is 32.
-
-Parent folder path should be provided in `dataset_path`. Inside it must be one or more folder with images. These folders are used as class information.
-
-For fast training it is best to first resize to expected size and remove corrupted, low res images with tools in this repo.
-
 
 ### Results
 
@@ -31,6 +23,16 @@ Results were upsampled from `64 x 64` trained model output to `128 x 128` by nea
 
 
 
+## Instructions
+
+For gradient accumulation `batch_size * accumulation_iters` is the actual minibatch size. If code `batch_size = 2` and `accumulation_iters = 16` then minibatch size for gradient calculation is 32.
+
+Parent folder path should be provided in `dataset_path`. Inside it must be one or more folder with images. These folders are used as class information.
+
+For fast training it is best to first resize to expected size and remove corrupted, low res images with tools in this repo.
+
+
+
 ### Codes
 
 | Name | Description |
@@ -43,8 +45,11 @@ Results were upsampled from `64 x 64` trained model output to `128 x 128` by nea
 | Dataset | Download Link |
 | ----------- | ----------- |
 | [Stanford Cars]() |  |
+|  |  |
+|  |  |
 | [CelebA]() |  |
-
+|  |  |
+|  |  |
 
 
 ## Process
