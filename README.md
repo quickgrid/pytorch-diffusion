@@ -16,7 +16,7 @@ Results were upsampled from `64 x 64` trained model output to `128 x 128` by nea
 ![ddpm_cars](images/ddpm_cars.gif "ddpm_cars")
 ![ddpm_ema_cars](images/ddpm_ema_cars.gif "ddpm_ema_cars")
 
-**CelebA Dataset**
+**CelebA HQ Dataset**
 
 ![ddpm_celeba](images/ddpm_celeba.gif "ddpm_celeba")
 ![ddpm_ema_celeba](images/ddpm_ema_celeba.gif "ddpm_ema_celeba")
@@ -42,14 +42,16 @@ For fast training it is best to first resize to expected size and remove corrupt
 
 ### Pretrained Checkpoints
 
+
+Models are available in, https://huggingface.co/quickgrid/pytorch-diffusion.
+
 | Dataset | Download Link |
 | ----------- | ----------- |
-| [Stanford Cars]() |  |
+| [Stanford Cars]() | https://huggingface.co/quickgrid/pytorch-diffusion/blob/main/cars_61_4000.pt |
+|  | https://huggingface.co/quickgrid/pytorch-diffusion/blob/main/cars_ema_61_4000.pt |
 |  |  |
-|  |  |
-| [CelebA]() |  |
-|  |  |
-|  |  |
+| [CelebA HQ]() | https://huggingface.co/quickgrid/pytorch-diffusion/blob/main/celeba_147_0.pt |
+|  | https://huggingface.co/quickgrid/pytorch-diffusion/blob/main/celeba_ema_147_0.pt |
 
 
 ## Process
