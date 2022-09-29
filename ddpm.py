@@ -53,7 +53,6 @@ class Diffusion:
 
         # Section 2, equation 4 and near explation for alpha, alpha hat, beta.
         self.beta = self.linear_noise_schedule()
-        # self.beta = self.cosine_beta_schedule()
         self.alpha = 1 - self.beta
         self.alpha_hat = torch.cumprod(self.alpha, dim=0)
 
@@ -74,16 +73,6 @@ class Diffusion:
         out information. So noise removal is also very small amount so it takes more steps to generate clear image.
         """
         return torch.linspace(start=self.beta_start, end=self.beta_end, steps=self.noise_steps, device=self.device)
-
-    def cosine_beta_schedule(self, s=0.008):
-        """Cosine schedule from annotated transformers.
-        """
-        steps = self.noise_steps + 1
-        x = torch.linspace(0, self.noise_steps, steps, device=self.device)
-        alphas_cumprod = torch.cos(((x / self.noise_steps) + s) / (1 + s) * torch.pi * 0.5) ** 2
-        alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
-        betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
-        return torch.clip(betas, 0.0001, 0.9999)
 
     def q_sample(self, x: torch.Tensor, t: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """Section 3.2, algorithm 1 formula implementation. Forward process, defined by `q`.
