@@ -43,7 +43,9 @@ For fast training it is best to first resize to expected size and remove corrupt
 ### Pretrained Checkpoints
 
 
-Models are available in, https://huggingface.co/quickgrid/pytorch-diffusion.
+Models are available in, https://huggingface.co/quickgrid/pytorch-diffusion. 
+
+Trained with linear noise schedule.
 
 | Dataset | Download Link |
 | ----------- | ----------- |
