@@ -93,6 +93,7 @@ Sampling from trained network is reverse process `p` that generates denoised ima
 - Add super resolution with unet like imagen for 4X upsampling, `64x64 => 256x256 => 1024x1024`.
 - Train and test with SWA EMA model. 
 - Add loss to tensorboard.
+- Check if overfitting.
 
 
 ## Issues
