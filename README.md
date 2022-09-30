@@ -25,12 +25,15 @@ Results were upsampled from `64 x 64` trained model output to `128 x 128` by nea
 
 ## Instructions
 
-For gradient accumulation `batch_size * accumulation_iters` is the actual minibatch size. If code `batch_size = 2` and `accumulation_iters = 16` then minibatch size for gradient calculation is 32.
-
 Parent folder path should be provided in `dataset_path`. Inside it must be one or more folder with images. These folders are used as class information.
 
 For fast training it is best to first resize to expected size and remove corrupted, low res images with tools in this repo.
 
+**Large Minibatch Training**
+
+For gradient accumulation `batch_size * accumulation_iters` is the actual expected minibatch size. If code `batch_size = 2` and `accumulation_iters = 16` then minibatch size for gradient calculation is 32.
+
+If required minibatch size is 64 and `batch_size = 8` fits in memory then `accumulation_iters` should be 8.
 
 **Resume Training**
 
