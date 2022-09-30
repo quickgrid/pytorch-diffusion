@@ -778,7 +778,6 @@ class Trainer:
                         # total_loss += (float(accumulated_minibatch_loss) / len(self.train_loader) * self.accumulation_iters)
                         pbar.set_description(
                             # f'Loss minibatch: {float(accumulated_minibatch_loss):.4f}, total: {total_loss:.4f}'
-                            # f'Loss minibatch: {float(accumulated_minibatch_loss) / self.accumulation_iters:.4f}'
                             f'Loss minibatch: {float(accumulated_minibatch_loss):.4f}'
                         )
                         accumulated_minibatch_loss = 0.0
