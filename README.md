@@ -105,7 +105,7 @@ Sampling from trained network is reverse process `p` that generates denoised ima
 - Convert to channel last mode.
 - Rename SelfAttention class to TransformerEncoderSA.
 - Transformer encoder block missing layer norm after MHA.
-
+- Move test class to separate file.
 
 ## Issues
 
