@@ -66,26 +66,6 @@ Noise is applied to images on each timestep `t` based on noise schedule. This is
 Sampling from trained network is reverse process `p` that generates denoised image. A random noise is passed through network for `T` steps that denoises the image. Algorithm 2 of DDPM paper is used for sampling.
 
 
-### Features
-
-- Annotated code with example and paper reference.
-- Test code for model architecture, expected output.
-- Tried to follow PEP-8 style code.
-- Save and load model, ema model.
-- Sampling with pretrained weights.
-- Stochastic weight averaging (SWA) example and implementation. (Not tested)
-- EMA (Exponential Moving Average) model.
-- Linear, cosine noise scheduling.
-- Learning rate scheduling.
-- Sinusoidal positional embedding with dropout.
-- Precalculated values for faster sampling.
-- Mixed precision training.
-- Gradient accumulation for large minibatch training to fit in low memory GPU.
-- UNet with Attention layers.
-
-
-
-
 ## Todo
 
 - Try to implement ddim.
