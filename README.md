@@ -97,6 +97,7 @@ Sampling from trained network is reverse process `p` that generates denoised ima
 - Add loss to tensorboard.
 - Check if overfitting, add validation.
 - Convert to channel last mode.
+- Rename SelfAttention class to TransformerEncoder.
 
 
 ## Issues
