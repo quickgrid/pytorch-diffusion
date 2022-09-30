@@ -71,7 +71,7 @@ trainer.sample_gif(
 
 Models are available in, https://huggingface.co/quickgrid/pytorch-diffusion. 
 
-Trained with linear noise schedule and `T = 500` noise steps.
+Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1 day without waiting for further improvement.
 
 | Dataset | Download Link |
 | ----------- | ----------- |
