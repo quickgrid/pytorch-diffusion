@@ -96,6 +96,7 @@ Sampling from trained network is reverse process `p` that generates denoised ima
 - Train and test with SWA EMA model. 
 - Add loss to tensorboard.
 - Check if overfitting, add validation.
+- Convert to channel last mode.
 
 
 ## Issues
