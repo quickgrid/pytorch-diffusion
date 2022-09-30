@@ -97,7 +97,8 @@ Sampling from trained network is reverse process `p` that generates denoised ima
 - Add loss to tensorboard.
 - Check if overfitting, add validation.
 - Convert to channel last mode.
-- Rename SelfAttention class to TransformerEncoder.
+- Rename SelfAttention class to TransformerEncoderSA.
+- Transformer encoder block missing layer norm after MHA.
 
 
 ## Issues
@@ -117,3 +118,5 @@ Sampling from trained network is reverse process `p` that generates denoised ima
 - Postional embedding, http://nlp.seas.harvard.edu/annotated-transformer/.
 - Attention paper, https://arxiv.org/pdf/1706.03762.pdf.
 - Transformers, https://pytorch.org/tutorials/beginner/transformer_tutorial.html.
+- Transformer encoder architecture, https://arxiv.org/pdf/2010.11929.pdf.
+- UNet architecture, https://arxiv.org/pdf/1505.04597.pdf.
