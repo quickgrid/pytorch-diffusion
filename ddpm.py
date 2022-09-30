@@ -13,6 +13,8 @@ References
     - Postional embedding, http://nlp.seas.harvard.edu/annotated-transformer/.
     - Attention paper, https://arxiv.org/pdf/1706.03762.pdf.
     - Transformers, https://pytorch.org/tutorials/beginner/transformer_tutorial.html.
+    - Transformer encoder architecture, https://arxiv.org/pdf/2010.11929.pdf.
+    - UNet architecture, https://arxiv.org/pdf/1505.04597.pdf.
 """
 import copy
 import math
@@ -70,14 +72,14 @@ class Diffusion:
 
     def linear_noise_schedule(self) -> torch.Tensor:
         """Same amount of noise is applied each step. Weakness is near end steps image is so noisy it is hard make
-        out information. So noise removal is also very small amount so it takes more steps to generate clear image.
+        out information. So noise removal is also very small amount, so it takes more steps to generate clear image.
         """
         return torch.linspace(start=self.beta_start, end=self.beta_end, steps=self.noise_steps, device=self.device)
 
     def q_sample(self, x: torch.Tensor, t: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """Section 3.2, algorithm 1 formula implementation. Forward process, defined by `q`.
 
-        Found in section in section 2. `q` gradually adds gaussian noise according to variance schedule. Also
+        Found in section 2. `q` gradually adds gaussian noise according to variance schedule. Also,
         can be seen on figure 2.
         """
         sqrt_alpha_hat = self.sqrt_alpha_hat[t].view(-1, 1, 1, 1)
@@ -90,7 +92,7 @@ class Diffusion:
         """
         return torch.randint(low=1, high=self.noise_steps, size=(batch_size, ), device=self.device)
 
-    def p_sample(self, eps_model: nn.Module, n: int) -> torch.Tensor:
+    def p_sample(self, eps_model: nn.Module, n: int, scale_factor: int = 2) -> torch.Tensor:
         """Implementation of algorithm 2 sampling. Reverse process, defined by `p` in section 2. Short
          formula is defined in equation 11 of section 3.2.
 
@@ -101,6 +103,7 @@ class Diffusion:
         are clamped to [-1, 1] and converted to pixel values [0, 255].
 
         Args:
+            scale_factor: Scales the output image by the factor.
             eps_model: Noise prediction model. `eps_theta(x_t, t)` in paper. Theta is the model parameters.
             n: Number of samples to process.
 
@@ -129,6 +132,7 @@ class Diffusion:
         eps_model.train()
 
         x = ((x.clamp(-1, 1) + 1) * 127.5).type(torch.uint8)
+        x = F.interpolate(input=x, scale_factor=scale_factor, mode='nearest-exact')
         return x
 
     def generate_gif(
@@ -138,6 +142,7 @@ class Diffusion:
             save_path: str = '',
             output_name: str = None,
             skip_steps: int = 20,
+            scale_factor: int = 2,
     ) -> None:
         logging.info(f'Generating gif....')
         frames_list = []
@@ -160,7 +165,7 @@ class Diffusion:
                     (epsilon_t * random_noise)
 
                 if i % skip_steps == 0:
-                    x_img = F.interpolate(input=x, scale_factor=2, mode='nearest-exact')
+                    x_img = F.interpolate(input=x, scale_factor=scale_factor, mode='nearest-exact')
                     x_img = ((x_img.clamp(-1, 1) + 1) * 127.5).type(torch.uint8)
                     grid = torchvision.utils.make_grid(x_img)
                     img_arr = grid.permute(1, 2, 0).cpu().numpy()
@@ -178,6 +183,7 @@ class Diffusion:
             duration=80,
             loop=0
         )
+
 
 class PositionalEncoding(nn.Module):
     def __init__(
@@ -206,7 +212,7 @@ class PositionalEncoding(nn.Module):
 
         pos_encoding = torch.zeros(max_len, embedding_dim)
         position = torch.arange(start=0, end=max_len).unsqueeze(1)
-        div_term = torch.exp(-math.log(10000.0) * torch.arange(0, embedding_dim, 2) / embedding_dim)
+        div_term = torch.exp(-math.log(10000.0) * torch.arange(0, embedding_dim, 2).float() / embedding_dim)
 
         pos_encoding[:, 0::2] = torch.sin(position * div_term)
         pos_encoding[:, 1::2] = torch.cos(position * div_term)
@@ -227,7 +233,7 @@ class PositionalEncoding(nn.Module):
 
     def forward(self, t: torch.LongTensor) -> torch.Tensor:
         """Get precalculated positional embedding at timestep t. Outputs same as video implementation
-        code but embeddings are in [sin cos sin cos] format instead of [sin sin cos cos] in that code.
+        code but embeddings are in [sin, cos, sin, cos] format instead of [sin, sin, cos, cos] in that code.
         Also batch dimension is added to final output.
         """
         positional_encoding = self.pos_encoding[t].squeeze(1)
@@ -291,7 +297,7 @@ class Down(nn.Module):
         downsampling in h, w and outputting specified amount of feature maps/channels.
 
         `t_embedding` is embedding of timestep of shape [batch, time_dim]. It is passed through embedding layer
-        to output channel dimentsion equivalent to channel dimension of x tensor so they can be summbed elementwise.
+        to output channel dimentsion equivalent to channel dimension of x tensor, so they can be summbed elementwise.
 
         Since emb_layer output needs to be summed its output is also `emb.shape == [4, 128]`. It needs to be converted
         to 4D tensor, [4, 128, 1, 1]. Then the channel dimension is duplicated in all of `H x W` dimension to get
@@ -327,9 +333,12 @@ class Up(nn.Module):
         return x + emb
 
 
-class SelfAttention(nn.Module):
+class TransformerEncoderSA(nn.Module):
     def __init__(self, num_channels: int, size: int, num_heads: int = 4):
-        super(SelfAttention, self).__init__()
+        """A block of transformer encoder with mutli head self attention from vision transformers paper,
+         https://arxiv.org/pdf/2010.11929.pdf.
+        """
+        super(TransformerEncoderSA, self).__init__()
         self.num_channels = num_channels
         self.size = size
         self.mha = nn.MultiheadAttention(embed_dim=num_channels, num_heads=num_heads, batch_first=True)
@@ -376,22 +385,22 @@ class UNet(nn.Module):
 
         self.input_conv = DoubleConv(in_channels, 64)
         self.down1 = Down(64, 128)
-        self.sa1 = SelfAttention(128, 32)
+        self.sa1 = TransformerEncoderSA(128, 32)
         self.down2 = Down(128, 256)
-        self.sa2 = SelfAttention(256, 16)
+        self.sa2 = TransformerEncoderSA(256, 16)
         self.down3 = Down(256, 256)
-        self.sa3 = SelfAttention(256, 8)
+        self.sa3 = TransformerEncoderSA(256, 8)
 
         self.bottleneck1 = DoubleConv(256, 512)
         self.bottleneck2 = DoubleConv(512, 512)
         self.bottleneck3 = DoubleConv(512, 256)
 
         self.up1 = Up(512, 128)
-        self.sa4 = SelfAttention(128, 16)
+        self.sa4 = TransformerEncoderSA(128, 16)
         self.up2 = Up(256, 64)
-        self.sa5 = SelfAttention(64, 32)
+        self.sa5 = TransformerEncoderSA(64, 32)
         self.up3 = Up(128, 64)
-        self.sa6 = SelfAttention(64, 64)
+        self.sa6 = TransformerEncoderSA(64, 64)
         self.out_conv = nn.Conv2d(in_channels=64, out_channels=out_channels, kernel_size=(1, 1))
 
     def forward(self, x: torch.Tensor, t: torch.LongTensor) -> torch.Tensor:
@@ -518,7 +527,7 @@ class Tester:
 
     def test_attention(self) -> None:
         x = torch.randn(size=(4, 128, 32, 32))
-        sa1 = SelfAttention(128, 32)
+        sa1 = TransformerEncoderSA(128, 32)
         output = sa1(x)
         assert x.shape == output.shape, 'Shape of output of feature map x and self attention output should be same.'
         print(f'Self attention input shape: {x.shape}')
@@ -797,17 +806,18 @@ class Trainer:
 if __name__ == '__main__':
     trainer = Trainer(
         dataset_path=r'C:\datasets\cars',
+        save_path=r'C:\DeepLearningPytorch\ddpm',
         # checkpoint_path=r'C:\DeepLearningPytorch\ddpm\model_126_0.pt',
         # checkpoint_path_ema=r'C:\DeepLearningPytorch\ddpm\model_ema_126_0.pt',
     )
     trainer.train()
-    
-    # trainer.sample(output_name='output3')
-    
+
+    # trainer.sample(output_name='output6', sample_count=4)
+
     # trainer.sample_gif(
     #     output_name='output8',
     #     sample_count=1,
-    #     save_path=r'C:\computer_vision\ddpm'
+    #     save_path=r'C:\DeepLearningPytorch\ddpm'
     # )
 
     # tester = Tester(device='cuda')
