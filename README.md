@@ -4,7 +4,7 @@
 
 Implementation of diffusion models in pytorch for custom training. This code is mainly based on [this repo](https://github.com/dome272/Diffusion-Models-pytorch).
 
-Only slow sampling is implemented so far with both train and test timesteps equal to `T`.  It may require atleast an hour or two to generate something recognizable based on dataset. Only `64 x 64` resolution is tested. 
+Only slow sampling is implemented so far with both train and denoising sampling timesteps equal to `T`.  It may require atleast an hour or two to generate something recognizable based on dataset. Only `64 x 64` resolution is tested. 
 
 
 ### Results
@@ -32,6 +32,29 @@ Parent folder path should be provided in `dataset_path`. Inside it must be one o
 For fast training it is best to first resize to expected size and remove corrupted, low res images with tools in this repo.
 
 
+**Resume Training**
+
+To resume training `checkpoint_path` and `checkpoint_path_ema` should be provided.
+
+**Sample Images**
+
+This will generate 4 images each with regular and ema model.
+
+```
+trainer.sample(output_name='output', sample_count=4)
+```
+
+**Sample Gif**
+
+The following will generate `out.gif` in chosen directory. The pretrained checkpoint paths must be provided to sample.
+
+```
+trainer.sample_gif(
+    output_name='out',
+    sample_count=2,
+    save_path=r'C:\computer_vision\ddpm'
+)
+```
 
 ### Codes
 
@@ -45,7 +68,7 @@ For fast training it is best to first resize to expected size and remove corrupt
 
 Models are available in, https://huggingface.co/quickgrid/pytorch-diffusion. 
 
-Trained with linear noise schedule.
+Trained with linear noise schedule and `T = 500` noise steps.
 
 | Dataset | Download Link |
 | ----------- | ----------- |
