@@ -1,7 +1,5 @@
 # Pytorch Diffusion
 
-**This code is up to date version of, https://github.com/quickgrid/paper-implementations/tree/main/pytorch/denoising-diffusion.**
-
 Implementation of diffusion models in pytorch for custom training. This code is mainly based on [this repo](https://github.com/dome272/Diffusion-Models-pytorch).
 
 Only slow sampling is implemented so far with both train and denoising sampling timesteps equal to `T`.  It may require atleast an hour or two to generate something recognizable based on dataset. Only `64 x 64` resolution is tested. 
@@ -82,16 +80,6 @@ Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1
 |  | https://huggingface.co/quickgrid/pytorch-diffusion/blob/main/celeba_ema_147_0.pt |
 
 
-## Process
-
-![ddpm_diagram](images/ddpm_diagram.png "ddpm_diagram")
-
-
-Noise is applied to images on each timestep `t` based on noise schedule. This is forward process `q` with larger `t` the more noise. A random timestep is chosen per minibatch based on which noise is generated that is used to corrupt input images. The image is passed to network that predicts the noise for given timestep. L1 or L2 loss calculated between predicted noise and image corruption noise. Algorithm 1 of DDPM paper is used train the network.
-
-Sampling from trained network is reverse process `p` that generates denoised image. A random noise is passed through network for `T` steps that denoises the image. Algorithm 2 of DDPM paper is used for sampling.
-
-
 ## Todo
 
 - Try to implement ddim.
@@ -113,7 +101,7 @@ Sampling from trained network is reverse process `p` that generates denoised ima
 
 ## References
 
-- Annotated implementation, https://github.com/quickgrid/paper-implementations/tree/main/pytorch/denoising-diffusion.
+- Annotated DDPM implementation, https://github.com/quickgrid/paper-implementations/tree/main/pytorch/denoising-diffusion.
 - Implementation, https://www.youtube.com/watch?v=TBCRlnwJtZU.
 - Implementation, https://github.com/dome272/Diffusion-Models-pytorch.
 - DDPM paper, https://arxiv.org/pdf/2006.11239.pdf.
