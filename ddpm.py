@@ -408,7 +408,7 @@ class UNet(nn.Module):
 
         Args:
             x: Image tensor of shape, [batch_size, channels, height, width].
-            t: Time step defined as long integer. If batch size is 4 and timestep 100, then t = [100, 100, 100, 100].
+            t: Time step defined as long integer. If batch size is 4, noise step 500, then random timesteps t = [10, 26, 460, 231].
         """
         t = self.pos_encoding(t)
 
