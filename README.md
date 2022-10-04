@@ -101,7 +101,7 @@ Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1
 
 ## References
 
-- Annotated DDPM implementation, https://github.com/quickgrid/paper-implementations/tree/main/pytorch/denoising-diffusion.
+- Annotated DDPM implementation, https://github.com/quickgrid/paper-implementations/tree/main/pytorch/ddim.
 - Implementation, https://www.youtube.com/watch?v=TBCRlnwJtZU.
 - Implementation, https://github.com/dome272/Diffusion-Models-pytorch.
 - DDPM paper, https://arxiv.org/pdf/2006.11239.pdf.
