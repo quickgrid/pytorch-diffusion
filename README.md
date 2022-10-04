@@ -2,7 +2,7 @@
 
 Implementation of diffusion models in pytorch for custom training. This code is mainly based on [this repo](https://github.com/dome272/Diffusion-Models-pytorch).
 
-Only slow sampling is implemented so far with both train and denoising sampling timesteps equal to `T`.  It may require atleast an hour or two to generate something recognizable based on dataset. Only `64 x 64` resolution is tested. 
+Models are implemented for `64 x 64` resolution output which are scaled 2X by nearest sampling to `128 x 128` resolution. In DDPM both training and reverse sampling requires around `T` steps. In DDIM reverse sampling can be done in small number of steps.
 
 
 ## Results
