@@ -11,7 +11,7 @@ Results were upsampled from `64 x 64` trained model output to `128 x 128` by nea
 
 ### DDPM
 
-**Stanford Cars and CelebA HQ Dataset**
+Stanford Cars and CelebA HQ Dataset.
 
 ![ddpm_cars](images/ddpm_cars.gif "ddpm_cars")
 ![ddpm_ema_cars](images/ddpm_ema_cars.gif "ddpm_ema_cars")
@@ -19,6 +19,8 @@ Results were upsampled from `64 x 64` trained model output to `128 x 128` by nea
 ![ddpm_ema_celeba](images/ddpm_ema_celeba.gif "ddpm_ema_celeba")
 
 ### DDIM
+
+CelebA HQ dataset.
 
 ![ddim_celeba_hq](images/ddim_celeba_hq.gif "ddim_celeba")
 ![ddim_celeba_hq_ema_1](images/ddim_celeba_hq_ema_1.gif "ddim_celeba_hq_ema_1")
