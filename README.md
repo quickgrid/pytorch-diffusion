@@ -91,6 +91,7 @@ Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1
 
 ## Todo
 
+- Match ddpm, ddim variable names, functions and merge code. 
 - Class conditional generation.
 - Classifier Free Guidance (CFG).
 - Save EMA step number with checkpoint.
