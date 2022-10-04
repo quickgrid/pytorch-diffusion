@@ -5,20 +5,25 @@ Implementation of diffusion models in pytorch for custom training. This code is 
 Only slow sampling is implemented so far with both train and denoising sampling timesteps equal to `T`.  It may require atleast an hour or two to generate something recognizable based on dataset. Only `64 x 64` resolution is tested. 
 
 
-### Results
+## Results
 
 Results were upsampled from `64 x 64` trained model output to `128 x 128` by nearest interpolation.
 
-**Stanford Cars Dataset**
+### DDPM
+
+**Stanford Cars and CelebA HQ Dataset**
 
 ![ddpm_cars](images/ddpm_cars.gif "ddpm_cars")
 ![ddpm_ema_cars](images/ddpm_ema_cars.gif "ddpm_ema_cars")
-
-**CelebA HQ Dataset**
-
 ![ddpm_celeba](images/ddpm_celeba.gif "ddpm_celeba")
 ![ddpm_ema_celeba](images/ddpm_ema_celeba.gif "ddpm_ema_celeba")
 
+### DDIM
+
+![ddim_celeba_hq](images/ddim_celeba_hq.gif "ddim_celeba")
+![ddim_celeba_hq_ema_1](images/ddim_celeba_hq_ema_1.gif "ddim_celeba_hq_ema_1")
+![ddim_celeba_hq_ema_2](images/ddim_celeba_hq_ema_2.gif "ddim_celeba_hq_ema_2")
+![ddim_celeba_hqa_ema_3](images/ddim_celeba_hq_ema_3.gif "ddim_celeba_hq_ema_3")
 
 
 ## Instructions
@@ -61,13 +66,15 @@ trainer.sample_gif(
 
 | Name | Description |
 | ----------- | ----------- |
-| `ddpm.py` | Implementation for testing new features. |
-
+| `ddpm.py` | DDPM implementation for testing new features. |
+| `ddim.py` | DDIM implementation for testing new features. |
 
 ### Pretrained Checkpoints
 
 
 Models are available in, https://huggingface.co/quickgrid/pytorch-diffusion. 
+
+#### DDPM
 
 Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1 day without waiting for further improvement.
 
@@ -82,7 +89,6 @@ Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1
 
 ## Todo
 
-- Try to implement ddim.
 - Class conditional generation.
 - Classifier Free Guidance (CFG).
 - Save EMA step number with checkpoint.
@@ -91,7 +97,6 @@ Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1
 - Add loss to tensorboard.
 - Check if overfitting, add validation.
 - Convert to channel last mode.
-- Rename SelfAttention class to TransformerEncoderSA.
 - Transformer encoder block missing layer norm after MHA.
 - Move test class to separate file.
 
@@ -102,8 +107,9 @@ Trained with linear noise schedule and `T = 500` noise steps. Only trained for 1
 ## References
 
 - Annotated DDPM implementation, https://github.com/quickgrid/paper-implementations/tree/main/pytorch/ddim.
-- Implementation, https://www.youtube.com/watch?v=TBCRlnwJtZU.
-- Implementation, https://github.com/dome272/Diffusion-Models-pytorch.
+- DDIM implementation, https://github.com/quickgrid/paper-implementations/tree/main/pytorch/ddim.
+- DDPM Implementation, https://www.youtube.com/watch?v=TBCRlnwJtZU.
+- DDPM Implementation, https://github.com/dome272/Diffusion-Models-pytorch.
 - DDPM paper, https://arxiv.org/pdf/2006.11239.pdf.
 - DDIM paper, https://arxiv.org/pdf/2010.02502.pdf.
 - Improved DDPM, https://arxiv.org/pdf/2102.09672.pdf.
