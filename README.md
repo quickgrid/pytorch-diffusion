@@ -20,7 +20,7 @@ Stanford Cars and CelebA HQ Dataset with 500 reverse diffusion steps. GIF genera
 
 ### DDIM
 
-CelebA HQ dataset with 40 reverse diffusion steps. No frames skipped during GIF generation.
+CelebA HQ dataset with 30-50 reverse diffusion steps. No frames skipped during GIF generation.
 
 ![ddim_celeba_hq](images/ddim_celeba_hq.gif "ddim_celeba")
 ![ddim_celeba_hq_ema_1](images/ddim_celeba_hq_ema_1.gif "ddim_celeba_hq_ema_1")
