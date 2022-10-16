@@ -493,7 +493,7 @@ class Utils:
         return saved_model['epoch']
 
 
-class Trainer:
+class DDIM:
     def __init__(
             self,
             dataset_path: str,
@@ -749,18 +749,18 @@ class Trainer:
 
 
 if __name__ == '__main__':
-    trainer = Trainer(
+    ddim = DDIM(
         dataset_path=r'C:\computer_vision\celeba',
         save_path=r'C:\computer_vision\ddim',
         checkpoint_path=r'C:\computer_vision\ddim\ddim_celeba_66_0.pt',
         checkpoint_path_ema=r'C:\computer_vision\ddim\ddim_celeba_ema_66_0.pt',
         # enable_train_mode=False,
     )
-    trainer.train()
+    ddim.train()
 
-    # trainer.sample(output_name='output9', sample_count=2, diffusion_steps=40)
+    # ddim.sample(output_name='output9', sample_count=2, diffusion_steps=40)
 
-    # trainer.sample_gif(
+    # ddim.sample_gif(
     #     output_name='output8',
     #     sample_count=1,
     #     save_path=r'C:\computer_vision\ddim',
