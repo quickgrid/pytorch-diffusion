@@ -2,7 +2,7 @@
 
 Implementation of diffusion models in pytorch for custom training. This code is mainly based on [this repo](https://github.com/dome272/Diffusion-Models-pytorch).
 
-Models are implemented for `64 x 64` resolution output which are scaled 2X by nearest sampling to `128 x 128` resolution. In DDPM both training and reverse sampling requires around `T` steps. In DDIM reverse sampling can be done in small number of steps.
+Models are implemented for `64 x 64` resolution output which are scaled 2x by nearest sampling to `128 x 128` resolution. In DDPM both training and reverse sampling requires around `T` steps. In DDIM reverse sampling can be done in small number of steps.
 
 
 ## Results
