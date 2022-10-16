@@ -229,19 +229,6 @@ class PositionalEncoding(nn.Module):
         pos_encoding[:, 1::2] = torch.cos(position * div_term)
         self.register_buffer(name='pos_encoding', tensor=pos_encoding, persistent=False)
 
-    def forward_on_all(self, x: torch.Tensor) -> torch.Tensor:
-        """Adds positional embedding to all patches. Not used here.
-
-        Same positional embedding is applied to all images in batch. The precalculated positional
-        embedding values are summed with the given embedding vector.
-
-        Args:
-            x: Image patch embedding tensor. Shape [batch_size, patch_count, embedding_dim].
-        """
-        pos_encoding = self.pos_encoding.unsqueeze(0)
-        x = x + pos_encoding[:, : x.shape[1]]
-        return self.dropout(x)
-
     def forward(self, t: torch.LongTensor) -> torch.Tensor:
         """Get precalculated positional embedding at timestep t. Outputs same as video implementation
         code but embeddings are in [sin, cos, sin, cos] format instead of [sin, sin, cos, cos] in that code.
