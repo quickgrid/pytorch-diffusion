@@ -652,7 +652,7 @@ class DDIM:
         )
 
     def train(self) -> None:
-        assert self.enable_train_mode, 'Cannot train when enable_enable_train_mode flag disabled.'
+        assert self.enable_train_mode, 'Cannot train when enable_train_mode flag disabled.'
 
         logging.info(f'Training started....')
         for epoch in range(self.start_epoch, self.num_epochs):
