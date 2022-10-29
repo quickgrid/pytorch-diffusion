@@ -624,6 +624,7 @@ class Trainer:
             save_every: int = 2000,
             learning_rate: float = 2e-4,
             noise_steps: int = 500,
+            enable_train_mode: bool = True,        
     ):
         self.num_epochs = num_epochs
         self.device = device
@@ -637,20 +638,21 @@ class Trainer:
         pathlib.Path(self.save_path).mkdir(parents=True, exist_ok=True)
         self.logger = SummaryWriter(log_dir=os.path.join(self.save_path, 'logs'))
 
-        diffusion_dataset = CustomImageClassDataset(
-            root_dir=dataset_path,
-            image_size=image_size,
-            image_channels=image_channels
-        )
-        self.train_loader = DataLoader(
-            diffusion_dataset,
-            batch_size=batch_size,
-            shuffle=True,
-            pin_memory=True,
-            num_workers=num_workers,
-            drop_last=False,
-            collate_fn=Utils.collate_fn,
-        )
+        if enable_train_mode:
+            diffusion_dataset = CustomImageClassDataset(
+                root_dir=dataset_path,
+                image_size=image_size,
+                image_channels=image_channels
+            )
+            self.train_loader = DataLoader(
+                diffusion_dataset,
+                batch_size=batch_size,
+                shuffle=True,
+                pin_memory=True,
+                num_workers=num_workers,
+                drop_last=False,
+                collate_fn=Utils.collate_fn,
+            )
 
         self.unet_model = UNet().to(device)
         self.diffusion = Diffusion(img_size=image_size, device=self.device, noise_steps=noise_steps)
@@ -806,6 +808,7 @@ if __name__ == '__main__':
         save_path=r'C:\DeepLearningPytorch\ddpm',
         # checkpoint_path=r'C:\DeepLearningPytorch\ddpm\model_126_0.pt',
         # checkpoint_path_ema=r'C:\DeepLearningPytorch\ddpm\model_ema_126_0.pt',
+        # enable_train_mode=False,
     )
     trainer.train()
 
