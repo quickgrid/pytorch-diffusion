@@ -1,3 +1,5 @@
+### New version, https://github.com/quickgrid/text-to-image-diffusion.
+
 # Pytorch Diffusion
 
 Implementation of diffusion models in pytorch for custom training. This code is mainly based on [this repo](https://github.com/dome272/Diffusion-Models-pytorch).
